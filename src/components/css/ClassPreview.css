@@ -1,0 +1,25 @@
+.class-preview {
+  background-color: #d9d9d9;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  padding: 0;
+  flex: 1;
+}
+
+.class-preview-left,
+.class-preview-right {
+  padding: 0;
+}
+
+.class-preview-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+h2,
+h3 {
+  padding: 10px;
+  margin: 0;
+}
