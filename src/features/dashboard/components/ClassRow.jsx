@@ -9,9 +9,9 @@ export default function ClassRow({ cls, teacher, onSelect }) {
   return (
     <div className="class-row" onClick={onSelect} style={{ cursor: "pointer" }}>
       <div className="class-row-left">
-        <div className="class-name">{cls.name}</div>
+        <div className="class-name">{cls.name || "Unknown Class"}</div>
         <ul>
-          <li>{cls.room}</li>
+          <li>{cls.room || "Unknown Room"}</li>
         </ul>
       </div>
       <div className="class-row-right">
