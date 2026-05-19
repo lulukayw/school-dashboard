@@ -1,0 +1,43 @@
+/* --- Header --- */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #b0b8d1;
+  padding: 0 24px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.dashboard-header h1 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-username {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a1a2e;
+}
+
+.btn-logout {
+  padding: 6px 18px;
+  background: #fff;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.btn-logout:hover {
+  background: #e8e8e8;
+}

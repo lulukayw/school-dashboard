@@ -1,0 +1,29 @@
+* --- Sidebar --- */ .dashboard-sidebar {
+  width: 180px;
+  background: #d9dce6;
+  padding: 24px 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.sidebar-link:hover {
+  background: #c5c9d8;
+}
+
+.sidebar-link.active {
+  font-weight: 700;
+  border-left: 3px solid #4a6fa5;
+  background: #c5c9d8;
+}
