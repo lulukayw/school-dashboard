@@ -5,15 +5,16 @@
 // TODO (Firebase Auth): pass in the real user object once auth is set up
 // Replace the displayName prop with: getAuth().currentUser?.displayName
 
-
-import "../../../styles/dashboard.css";
+import "./styles/header.css";
 export default function Header({ displayName = "Admin", onLogout }) {
   return (
     <header className="dashboard-header">
       <h1>Thomas Jefferson Elementary School</h1>
       <div className="header-right">
         <span className="header-username">{displayName.toUpperCase()}</span>
-        <button className="btn-logout" onClick={onLogout}>Log Out</button>
+        <button className="btn-logout" onClick={onLogout}>
+          Log Out
+        </button>
       </div>
     </header>
   );
