@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../features/dashboard/components/Header";
 
 import StatCard from "../features/dashboard/components/StatCard";
 import ClassRow from "../features/dashboard/components/ClassRow";
@@ -77,16 +78,8 @@ export default function Home() {
   return (
     <div className="dashboard-shell">
 
-      {/* ===== HEADER ===== */}
-      <header className="dashboard-header">
-        <h1>Thomas Jefferson Elementary School</h1>
-        <div className="header-right">
-          {/* TODO (Firebase Auth): replace MOCK_USER with real auth user */}
-          <span className="header-username">{MOCK_USER.displayName.toUpperCase()}</span>
-          <button className="btn-logout" onClick={handleLogout}>Log Out</button>
-        </div>
-      </header>
-
+      {/* HEADER */}
+      <Header displayName={MOCK_USER.displayName} onLogout={handleLogout} />
       {/* ===== BODY ===== */}
       <div className="dashboard-body">
 
