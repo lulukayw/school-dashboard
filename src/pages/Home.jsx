@@ -1,9 +1,11 @@
 
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import StatCard from "../features/dashboard/components/StatCard";
 import ClassRow from "../features/dashboard/components/ClassRow";
 import "../styles/dashboard.css";
+import Sidebar from "../features/dashboard/components/Sidebar";
+import { useNavigate } from "react-router-dom";
+
 
 
 // Mock data — replace with Firebase/Firestore fetches later
@@ -60,27 +62,7 @@ export default function Home() {
       {/* ===== BODY ===== */}
       <div className="dashboard-body">
         {/* --- Sidebar --- */}
-        <nav className="dashboard-sidebar">
-          <NavLink to="/" end className={({ isActive }) => "sidebar-link" + (isActive ? " active" : "")}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/calendar" className={({ isActive }) => "sidebar-link" + (isActive ? " active" : "")}>
-            Calendar
-          </NavLink>
-          <NavLink to="/classes" className={({ isActive }) => "sidebar-link" + (isActive ? " active" : "")}>
-            Classes
-          </NavLink>
-          {/* TODO: add route for Departments when teammate builds that page */}
-          <span className="sidebar-link" style={{ color: "#999", cursor: "default" }}>
-            Departments
-          </span>
-          <NavLink to="/students" className={({ isActive }) => "sidebar-link" + (isActive ? " active" : "")}>
-            Student Directory
-          </NavLink>
-          <NavLink to="/teachers" className={({ isActive }) => "sidebar-link" + (isActive ? " active" : "")}>
-            Teacher Directory
-          </NavLink>
-        </nav>
+        <Sidebar />
         {/* --- Main Content --- */}
         <main className="dashboard-main">
           {/* Search Bar */}
