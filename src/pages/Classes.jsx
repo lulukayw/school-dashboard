@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { fetchAllClasses, studentsFromClass } from "../util/ClassServices";
 import { fetchAllTeachers } from "../util/TeacherServices";
-import ClassPreview from "../components/ClassPreview";
+import ClassRow from "../features/dashboard/components/ClassRow";
+import { useNavigate } from "react-router-dom";
+
+import "../styles/classes.css";
 
 export default function Classes() {
+  const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const [teacherMap, setTeacherMap] = useState({});
 
@@ -28,14 +32,15 @@ export default function Classes() {
   }, []);
 
   return (
-    <div>
+    <div className="class-list">
       {classes.map((c) => (
-        <ClassPreview
+        <ClassRow
           key={c.id}
-          name={c.name || "Unknown"}
-          room={c.room || "Unknown"}
-          students={c.students}
-          teacher_name={teacherMap[c.teacher_id] || "Unknown"}
+          cls={c}
+          teacher={{ id: c.teacher_id, name: teacherMap[c.teacher_id] }}
+          onSelect={() =>
+            navigate({ pathname: "/class", search: `?class=${c.id}` })
+          }
         />
       ))}
     </div>
