@@ -3,6 +3,7 @@ import { fetchAllClasses, studentsFromClass } from "../util/ClassServices";
 import { fetchAllTeachers } from "../util/TeacherServices";
 import ClassRow from "../features/dashboard/components/ClassRow";
 import { useNavigate } from "react-router-dom";
+import CreateClassForm from "../components/CreateClassForm";
 
 import "../styles/classes.css";
 
@@ -10,6 +11,16 @@ export default function Classes() {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const [teacherMap, setTeacherMap] = useState({});
+  const [showForm, setShowForm] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Event: ", e);
+  };
+
+  const handleExit = () => {
+    setShowForm(false);
+  };
 
   useEffect(() => {
     const loadClassesAndTeachers = async () => {
@@ -32,17 +43,29 @@ export default function Classes() {
   }, []);
 
   return (
-    <div className="class-list">
-      {classes.map((c) => (
-        <ClassRow
-          key={c.id}
-          cls={c}
-          teacher={{ id: c.teacher_id, name: teacherMap[c.teacher_id] }}
-          onSelect={() =>
-            navigate({ pathname: "/class", search: `?class=${c.id}` })
-          }
+    <>
+      <div className="class-list">
+        {classes.map((c) => (
+          <ClassRow
+            key={c.id}
+            cls={c}
+            teacher={{ id: c.teacher_id, name: teacherMap[c.teacher_id] }}
+            onSelect={() =>
+              navigate({ pathname: "/class", search: `?class=${c.id}` })
+            }
+          />
+        ))}
+      </div>
+      {!showForm && (
+        <button onClick={() => setShowForm(true)}>Create new class</button>
+      )}
+      {showForm && (
+        <CreateClassForm
+          handleSubmit={handleSubmit}
+          handleExit={handleExit}
+          teacherMap={teacherMap}
         />
-      ))}
-    </div>
+      )}
+    </>
   );
 }
