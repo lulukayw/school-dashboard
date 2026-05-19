@@ -28,8 +28,8 @@ const addEvent = async (name, location, start_time, end_time) => {
     const ref = await addDoc(collection(db, "events"), {
         name: name,
         location: location,
-        start_time: start_time, 
-        end_time: end_time    
+        start_time: start_time,
+        end_time: end_time
     });
 };
 
