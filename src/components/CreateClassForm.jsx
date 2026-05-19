@@ -21,7 +21,7 @@ export default function CreateClassForm({
         <label>
           Class name
           <input
-            name="name"
+            name="class-name"
             type="text"
             value={className}
             onChange={(e) => setClassName(e.target.value)}
@@ -45,6 +45,7 @@ export default function CreateClassForm({
           <select
             value={selectedTeacherId}
             onChange={(e) => setSelectedTeacherId(e.target.value)}
+            name="teacher-id"
           >
             <option value="">Select a teacher</option>
             {Object.entries(teacherMap).map(([teacherId, teacherName]) => (
