@@ -6,7 +6,7 @@
 
 
 export default function ClassRow({ cls, teacher, onSelect }) {
-    const studentCount = Object.keys(cls.students || {}).length;
+    const studentCount = (cls.students || []).length;
     return (
       <div className="class-row" onClick={onSelect} style={{ cursor: "pointer" }}>
         <div className="class-row-left">

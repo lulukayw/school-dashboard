@@ -1,6 +1,6 @@
 import { collection, getDocs, addDoc, updateDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase.js";
-import { studentFromId } from "./studentServices.js";
+import { studentFromId } from "./StudentServices.js";
 
 const fetchAllClasses = async () => {
     const snapshot = await getDocs(collection(db, "classes"));
