@@ -1,0 +1,92 @@
+.student-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #d8dde6;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.roster-row,
+.roster-cell {
+  display: block;
+}
+
+.roster-row {
+  display: grid;
+  grid-template-columns: 48px minmax(220px, 1fr) 120px;
+  gap: 8px 12px;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.roster-row.selected {
+  background-color: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-radius: 12px;
+}
+
+.roster-header-row {
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e6ebf2;
+}
+
+.roster-header {
+  font-weight: 600;
+  color: #445066;
+  font-size: 0.95rem;
+}
+
+.roster-cell {
+  padding: 10px 0;
+}
+
+.roster-cell-empty {
+  padding: 0;
+}
+
+.roster-icon-cell {
+  display: flex;
+  justify-content: center;
+}
+
+.roster-name-cell {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.roster-grade-cell {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.roster-grade-text {
+  min-width: 48px;
+  padding: 8px 10px;
+  border: 1px solid #d8dde6;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #1f2937;
+  text-align: center;
+  font: inherit;
+}
+
+.roster-grade-text:focus-visible {
+  outline: 2px solid #4f8cff;
+  outline-offset: 2px;
+}
+
+.roster-empty-state {
+  width: 100%;
+  padding: 18px 0 8px;
+  color: #667085;
+  font-style: italic;
+  text-align: center;
+}
+
+.trash-icon {
+  cursor: pointer;
+}
