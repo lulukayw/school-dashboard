@@ -119,6 +119,7 @@ const studentsFromClass = async (classId) => {
       if (!student) return null;
 
       return {
+        id: s.id,
         first_name: student.first_name,
         last_name: student.last_name,
         grade: s.grade,
