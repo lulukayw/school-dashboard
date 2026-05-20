@@ -4,8 +4,6 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import Header from "../features/dashboard/components/Header";
-import Sidebar from "../features/dashboard/components/Sidebar";
 import AddEventModal from "../features/calendar/components/AddEventModal";
 import EventDetailModal from "../features/calendar/components/EventDetailModal";
 
@@ -75,42 +73,36 @@ export default function Calendar() {
   const components = useMemo(() => ({ event: makeEventTile(currentView) }), [currentView]);
 
   return (
-    <div className="calendar-shell">
-      <Header />
-      <div className="calendar-body">
-        <Sidebar />
-        <main className="calendar-main">
-          <div className="calendar-header-row">
-            <button className="btn-action" onClick={() => { setPrefillDate(""); setAddOpen(true); }}>
-              + Add Event
-            </button>
-          </div>
+    <main className="calendar-main">
+      <div className="calendar-header-row">
+        <button className="btn-action" onClick={() => { setPrefillDate(""); setAddOpen(true); }}>
+          + Add Event
+        </button>
+      </div>
 
-          <div className="calendar-wrapper">
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              <BigCalendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                titleAccessor="title"
-                date={currentDate}
-                view={currentView}
-                onNavigate={setCurrentDate}
-                onView={setCurrentView}
-                selectable
-                onSelectSlot={(slot) => {
-                  setPrefillDate(getLocalDateString(slot.start));
-                  setAddOpen(true);
-                }}
-                onSelectEvent={(evt) => setSelected(evt)}
-                components={components}
-              />
-            )}
-          </div>
-        </main>
+      <div className="calendar-wrapper">
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <BigCalendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            titleAccessor="title"
+            date={currentDate}
+            view={currentView}
+            onNavigate={setCurrentDate}
+            onView={setCurrentView}
+            selectable
+            onSelectSlot={(slot) => {
+              setPrefillDate(getLocalDateString(slot.start));
+              setAddOpen(true);
+            }}
+            onSelectEvent={(evt) => setSelected(evt)}
+            components={components}
+          />
+        )}
       </div>
 
       <AddEventModal 
@@ -126,6 +118,6 @@ export default function Calendar() {
         onDelete={handleDelete}
         setEvents={setEvents}
       />
-    </div>
+    </main>
   );
 }
