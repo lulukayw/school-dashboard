@@ -22,8 +22,13 @@ const deleteStudent = async (studentId) => {
     await deleteDoc(doc(db, "students", studentId));
 };
 
+const updateStudent = async (studentId, updatedFields) => {
+    await updateDoc(doc(db, "students", studentId), updatedFields);
+};
+
 export { fetchAllStudents, 
     studentFromId, 
     addStudent, 
+    updateStudent,
     deleteStudent 
 };

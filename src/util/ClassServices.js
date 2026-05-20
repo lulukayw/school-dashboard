@@ -1,12 +1,5 @@
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  getDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
+
 import { db } from "../../firebase.js";
 import { studentFromId } from "./StudentServices.js";
 
@@ -22,17 +15,16 @@ const classFromId = async (id) => {
 
 const addClass = async (name, room, teacher_id) => {
   const docRef = await addDoc(collection(db, "classes"), {
-    name: name,
-    room: room,
-    teacher_id: teacher_id,
-    average_grade: 0,
-    students: [],
+    name,
+    room,
+    teacher_id,
+    students: []
   });
 
   return docRef.id;
 };
 
-const addStudentToClass = async (classId, studentId, grade) => {
+const addStudentToClass = async (classId, studentId) => {
   const clas = await getDoc(doc(db, "classes", classId));
   const student = await studentFromId(studentId);
 
@@ -43,62 +35,24 @@ const addStudentToClass = async (classId, studentId, grade) => {
 
   const updatedStudents = [
     ...classData.students,
-    {
-      id: student.id,
-      grade: grade,
-    },
+    { id: student.id }
   ];
 
-  const total = updatedStudents.reduce((sum, s) => sum + (s.grade || 0), 0);
-  const avg = updatedStudents.length
-    ? Math.round(total / updatedStudents.length)
-    : 0;
-
   await updateDoc(doc(db, "classes", classId), {
-    students: updatedStudents,
-    average_grade: avg,
+    students: updatedStudents
   });
 };
 
 const removeStudentFromClass = async (classId, studentId) => {
   const clas = await getDoc(doc(db, "classes", classId));
-
   if (!clas.exists()) return;
 
-  const classData = clas.data();
-
-  const updatedStudents = classData.students.filter((s) => s.id !== studentId);
-
-  const total = updatedStudents.reduce((sum, s) => sum + (s.grade || 0), 0);
-  const avg = updatedStudents.length
-    ? Math.round(total / updatedStudents.length)
-    : 0;
-
-  await updateDoc(doc(db, "classes", classId), {
-    students: updatedStudents,
-    average_grade: avg,
-  });
-};
-
-const updateGrade = async (classId, studentId, newGrade) => {
-  const clas = await getDoc(doc(db, "classes", classId));
-
-  if (!clas.exists()) return;
-
-  const classData = clas.data();
-
-  const updatedStudents = classData.students.map((s) =>
-    s.id === studentId ? { ...s, grade: newGrade } : s,
+  const updatedStudents = clas.data().students.filter(
+    (s) => s.id !== studentId
   );
 
-  const total = updatedStudents.reduce((sum, s) => sum + (s.grade || 0), 0);
-  const avg = updatedStudents.length
-    ? Math.round(total / updatedStudents.length)
-    : 0;
-
   await updateDoc(doc(db, "classes", classId), {
-    students: updatedStudents,
-    average_grade: avg,
+    students: updatedStudents
   });
 };
 
@@ -108,7 +62,6 @@ const deleteClass = async (classId) => {
 
 const studentsFromClass = async (classId) => {
   const clas = await getDoc(doc(db, "classes", classId));
-
   if (!clas.exists()) return [];
 
   const students = clas.data().students;
@@ -119,11 +72,11 @@ const studentsFromClass = async (classId) => {
       if (!student) return null;
 
       return {
+        id: s.id,
         first_name: student.first_name,
-        last_name: student.last_name,
-        grade: s.grade,
+        last_name: student.last_name
       };
-    }),
+    })
   );
 
   return results.filter(Boolean);
@@ -139,7 +92,6 @@ export {
   addClass,
   addStudentToClass,
   removeStudentFromClass,
-  updateGrade,
   deleteClass,
   studentsFromClass,
   updateClass,
