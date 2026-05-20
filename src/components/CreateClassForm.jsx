@@ -55,7 +55,9 @@ export default function CreateClassForm({
           ))}
         </select>
       </div>
-      <button type="submit">Create</button>
+      <button className="form-submit-btn" type="submit">
+        Create
+      </button>
     </form>
   );
 }

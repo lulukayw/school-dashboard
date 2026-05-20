@@ -1,3 +1,7 @@
+.form-submit-btn {
+  border: 1px solid black;
+}
+
 .form-container {
   width: 20vw;
   margin-left: auto;
