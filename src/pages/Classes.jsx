@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchAllClasses } from "../util/ClassServices";
 import { fetchAllTeachers } from "../util/TeacherServices";
-import ClassRow from "../features/dashboard/components/ClassRow";
+import ClassList from "../components/ClassList";
 import { useNavigate } from "react-router-dom";
 import CreateClassForm from "../components/CreateClassForm";
 import { addClass } from "../util/ClassServices";
@@ -11,7 +11,7 @@ import "../styles/classes.css";
 export default function Classes() {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
-  const [teacherMap, setTeacherMap] = useState({});
+  const [teachers, setTeachers] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -53,15 +53,12 @@ export default function Classes() {
     const loadClassesAndTeachers = async () => {
       try {
         const classData = await fetchAllClasses();
-        const teacherData = await fetchAllTeachers();
-
-        const teachers = {};
-        teacherData.forEach((teacher) => {
-          teachers[teacher.id] = `${teacher.first_name} ${teacher.last_name}`;
-        });
-
         setClasses(classData);
-        setTeacherMap(teachers);
+
+        const teacherData = await fetchAllTeachers();
+        setTeachers(teacherData);
+
+        console.log("teacher data is (classes): ", teacherData);
       } catch (e) {
         console.error("Error fetching data: ", e.message ?? "No error message");
       }
@@ -71,18 +68,7 @@ export default function Classes() {
 
   return (
     <>
-      <div className="class-list">
-        {classes.map((c) => (
-          <ClassRow
-            key={c.id}
-            cls={c}
-            teacher={{ id: c.teacher_id, name: teacherMap[c.teacher_id] }}
-            onSelect={() =>
-              navigate({ pathname: "/class", search: `?class=${c.id}` })
-            }
-          />
-        ))}
-      </div>
+      <ClassList classes={classes} teachers={teachers} />
       {!showForm && (
         <button className="show-form-btn" onClick={() => setShowForm(true)}>
           Create new class
