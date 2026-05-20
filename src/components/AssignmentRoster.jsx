@@ -52,14 +52,12 @@ export default function AssignmentRoster({
                 <h2>
                     Assignments {selectedStudent && `for ${selectedStudent.first_name} ${selectedStudent.last_name}`} ({assignments.length})
                 </h2>
-                {!selectedStudent && (
-                    <button
-                        className="add-assignment-btn"
-                        onClick={() => setShowAddForm(true)}
-                    >
-                        + Add Assignment
-                    </button>
-                )}
+                <button
+                    className="add-assignment-btn"
+                    onClick={() => setShowAddForm(true)}
+                >
+                    + Add Assignment
+                </button>
             </div>
             {showAddForm && (
                 <AddAssignmentForm
@@ -86,9 +84,14 @@ export default function AssignmentRoster({
                             </div>
                         </>
                     ) : (
-                        <div className="roster-cell roster-header" role="columnheader">
-                            Grade
-                        </div>
+                        <>
+                            <div className="roster-cell roster-header" role="columnheader">
+                                Points
+                            </div>
+                            <div className="roster-cell roster-header" role="columnheader">
+                                Grade
+                            </div>
+                        </>
                     )}
                 </div>
 
@@ -115,23 +118,34 @@ export default function AssignmentRoster({
                                     </div>
                                 </>
                             ) : (
-                                <div className="roster-cell roster-grade-cell" role="cell">
-                                    <input
-                                        type="number"
-                                        className="grade-input"
-                                        value={
-                                            editingGrades[assignment.id] !== undefined
-                                                ? editingGrades[assignment.id]
-                                                : getStudentGrade(assignment)
-                                        }
-                                        onChange={(e) =>
-                                            handleGradeInputChange(assignment.id, e.target.value)
-                                        }
-                                        onBlur={() => handleGradeBlur(assignment.id, assignment)}
-                                        max={assignment.max_score}
-                                        min="0"
-                                    />
-                                </div>
+                                <>
+                                    <div className="roster-cell roster-grade-cell" role="cell">
+                                        <input
+                                            type="number"
+                                            className="grade-input"
+                                            value={
+                                                editingGrades[assignment.id] !== undefined
+                                                    ? editingGrades[assignment.id]
+                                                    : getStudentGrade(assignment)
+                                            }
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") handleGradeBlur(assignment.id, assignment);
+                                            }}
+                                            onChange={(e) =>
+                                                handleGradeInputChange(assignment.id, e.target.value)
+                                            }
+                                            onBlur={() => handleGradeBlur(assignment.id, assignment)}
+                                            max={assignment.max_score}
+                                            min="0"
+                                        /> <span className="grade-max">/ {assignment.max_score ?? "—"}</span>
+                                    </div>
+
+                                    <div className="roster-cell grade-max" role="cell">
+                                        {assignment.max_score && getStudentGrade(assignment) !== "—"
+                                            ? `${Math.round((getStudentGrade(assignment) / assignment.max_score) * 100)}%`
+                                            : "—"}
+                                    </div>
+                                </>
                             )}
                         </div>
                     ))
