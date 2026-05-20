@@ -4,8 +4,8 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import AddEventModal from "../features/calendar/components/AddEventModal";
-import EventDetailModal from "../features/calendar/components/EventDetailModal";
+import AddEventModal from "../components/AddEventModal";
+import EventDetailModal from "../components/EventDetailModal";
 
 import { CircularProgress } from "@mui/material";
 import { fetchAllEvents, addEvent, deleteEvent, updateEvent, getLocalDateString } from "../util/EventsServices.js";

@@ -5,7 +5,7 @@ import "./styles/createclassform.css";
 export default function CreateClassForm({
   handleSubmit,
   handleExit,
-  teacherMap,
+  teachers,
 }) {
   const [className, setClassName] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
@@ -48,9 +48,9 @@ export default function CreateClassForm({
           onChange={(e) => setSelectedTeacherId(e.target.value)}
         >
           <option value="">Select a teacher</option>
-          {Object.entries(teacherMap).map(([teacherId, teacherName]) => (
-            <option key={teacherId} value={teacherId}>
-              {teacherName}
+          {teachers.map((t) => (
+            <option key={t.id} value={t.id}>
+              {`${t.first_name} ${t.last_name}`.trim()}
             </option>
           ))}
         </select>

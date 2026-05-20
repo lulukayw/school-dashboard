@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Box, Typography } from "@mui/material";
-import { addEvent, parseDateTime } from "../../../util/EventsServices.js";
+import { addEvent, parseDateTime } from "../util/EventsServices.js";
 
 const EMPTY_FORM = { name: "", location: "", startDate: "", startTime: "09:00", endDate: "", endTime: "10:00" };
 
