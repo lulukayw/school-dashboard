@@ -9,9 +9,9 @@ import {
 import { fetchAllStudents } from "../util/StudentServices";
 import { teacherFromId } from "../util/TeacherServices";
 import StudentRoster from "../components/StudentRoster";
+import StudentSearch from "../components/StudentSearch";
 
 import "../styles/class.css";
-import { X } from "lucide-react";
 
 export default function Class() {
   const [clas, setClas] = useState(null);
@@ -148,90 +148,15 @@ export default function Class() {
       )}
 
       {showStudentSearch && (
-        <section className="student-search-panel">
-          <div className="student-search-header">
-            <label
-              className="student-search-label"
-              htmlFor="student-search-input"
-            >
-              Search students
-            </label>
-            <X
-              className="search-exit-btn"
-              onClick={() => setShowStudentSearch(false)}
-            />
-          </div>
-          <input
-            id="student-search-input"
-            className="student-search-input"
-            type="search"
-            value={studentSearch}
-            onChange={(event) => setStudentSearch(event.target.value)}
-            placeholder="Search by first or last name"
-          />
-
-          <div className="student-search-results" role="table">
-            <div
-              className="student-search-row student-search-header-row"
-              role="row"
-            >
-              <div
-                className="student-search-cell student-search-name-header"
-                role="columnheader"
-              >
-                Student Name
-              </div>
-              <div
-                className="student-search-cell student-search-action-header"
-                role="columnheader"
-              >
-                Action
-              </div>
-            </div>
-
-            {isLoadingStudents ? (
-              <div className="student-search-empty" role="row">
-                Loading students...
-              </div>
-            ) : filteredStudents.length > 0 ? (
-              filteredStudents.map((student) => {
-                const isAlreadyInClass = studentIdsInClass.has(student.id);
-
-                return (
-                  <div
-                    className="student-search-row"
-                    role="row"
-                    key={student.id}
-                  >
-                    <div
-                      className="student-search-cell student-search-name"
-                      role="cell"
-                    >
-                      {`${student.first_name ?? ""} ${student.last_name ?? ""}`.trim()}
-                    </div>
-                    <div
-                      className="student-search-cell student-search-action"
-                      role="cell"
-                    >
-                      <button
-                        type="button"
-                        className="student-search-add-button"
-                        onClick={() => handleAddStudentToRoster(student.id)}
-                        disabled={isAlreadyInClass}
-                      >
-                        {isAlreadyInClass ? "Added" : "Add"}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="student-search-empty" role="row">
-                No matching students found.
-              </div>
-            )}
-          </div>
-        </section>
+        <StudentSearch
+          studentSearch={studentSearch}
+          setStudentSearch={setStudentSearch}
+          filteredStudents={filteredStudents}
+          isLoadingStudents={isLoadingStudents}
+          handleAddStudentToRoster={handleAddStudentToRoster}
+          studentIdsInClass={studentIdsInClass}
+          onClose={() => setShowStudentSearch(false)}
+        />
       )}
     </div>
   );
