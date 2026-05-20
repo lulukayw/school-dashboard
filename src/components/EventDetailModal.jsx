@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Box, Typography, IconButton } from "@mui/material";
 import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { updateEvent, parseDateTime, getLocalDateString } from "../../../util/EventsServices.js";
+import { updateEvent, parseDateTime, getLocalDateString } from "../util/EventsServices.js";
 
 const dialogProps = {
   fullWidth: true,
