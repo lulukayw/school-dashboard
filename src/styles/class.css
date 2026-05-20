@@ -1,6 +1,84 @@
+.class-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.class-info-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-class-btn {
+  cursor: pointer;
+}
+
+.class-name-input,
+.class-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cfd6e4;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #1f2937;
+  font: inherit;
+}
+
+.class-name-input:focus,
+.class-input:focus {
+  outline: 2px solid #4f8cff;
+  outline-offset: 2px;
+}
+
 .class-subinfo {
   display: flex;
   gap: 20vw;
+}
+
+.class-subinfo-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.class-subinfo-heading {
+  margin: 0;
+}
+
+.teacher-name,
+.room-number {
+  margin-top: 0.2rem;
+  color: #445066;
+}
+
+.class-subinfo-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #445066;
+  margin: 0;
+}
+
+.class-edit-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.class-edit-save-btn,
+.class-edit-cancel-btn {
+  padding: 8px 20px;
+  background: #d9dce6;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.class-edit-save-btn:hover,
+.class-edit-cancel-btn:hover {
+  background: #c5c9d8;
 }
 
 .student-search-panel {
