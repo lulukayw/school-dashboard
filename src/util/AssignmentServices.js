@@ -18,21 +18,25 @@ const assignmentFromId = async (classId, assignmentId) => {
 
 const addAssignment = async (classId, name, category, max_score, date) => {
     const ref = await addDoc(collection(db, "classes", classId, "assignments"), {
-            name,
-            category,
-            max_score,
-            date,
-            scores: {}
-        }
+        name,
+        category,
+        max_score,
+        date,
+        scores: {}
+    }
     );
 
     return ref.id;
 };
 
-const updateScore = async ( classId, assignmentId, studentId, score) => {
+const updateScore = async (classId, assignmentId, studentId, score) => {
     const ref = doc(db, "classes", classId, "assignments", assignmentId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return;
 
-    if (score>ref.max_score || score<0) return;
+    const data = snap.data();
+
+    if (score > data.max_score || score < 0) return;
 
     await updateDoc(ref, {
         [`scores.${studentId}`]: score
@@ -44,12 +48,6 @@ const deleteAssignment = async (classId, assignmentId) => {
         doc(db, "classes", classId, "assignments", assignmentId)
     );
 };
-
-// const calculateStudentGrade = async (classId, studentId) => {
-//     assignments = fetchAssignments(classId);
-    
-    
-// }
 
 export {
     fetchAssignments,

@@ -1,5 +1,4 @@
 import { collection, getDocs, addDoc, updateDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
-
 import { db } from "../../firebase.js";
 import { studentFromId } from "./StudentServices.js";
 
