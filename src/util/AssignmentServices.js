@@ -16,12 +16,11 @@ const assignmentFromId = async (classId, assignmentId) => {
     return snap.exists() ? { id: snap.id, ...snap.data() } : null;
 };
 
-const addAssignment = async (classId, name, category, max_score, date) => {
+const addAssignment = async (classId, name, category, max_score) => {
     const ref = await addDoc(collection(db, "classes", classId, "assignments"), {
         name,
         category,
         max_score,
-        date,
         scores: {}
     }
     );
