@@ -78,7 +78,7 @@ export default function Classes() {
         <CreateClassForm
           handleSubmit={handleSubmit}
           handleExit={handleExit}
-          teacherMap={teacherMap}
+          teachers={teachers}
         />
       )}
     </>
