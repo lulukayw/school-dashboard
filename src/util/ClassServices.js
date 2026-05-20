@@ -1,4 +1,12 @@
-import { collection, getDocs, addDoc, updateDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  getDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { studentFromId } from "./StudentServices.js";
 
@@ -17,7 +25,7 @@ const addClass = async (name, room, teacher_id) => {
     name,
     room,
     teacher_id,
-    students: []
+    students: [],
   });
 
   return docRef.id;
@@ -32,13 +40,10 @@ const addStudentToClass = async (classId, studentId) => {
   const classData = clas.data();
   if (classData.students.some((s) => s.id === student.id)) return;
 
-  const updatedStudents = [
-    ...classData.students,
-    { id: student.id }
-  ];
+  const updatedStudents = [...classData.students, { id: student.id }];
 
   await updateDoc(doc(db, "classes", classId), {
-    students: updatedStudents
+    students: updatedStudents,
   });
 };
 
@@ -46,12 +51,12 @@ const removeStudentFromClass = async (classId, studentId) => {
   const clas = await getDoc(doc(db, "classes", classId));
   if (!clas.exists()) return;
 
-  const updatedStudents = clas.data().students.filter(
-    (s) => s.id !== studentId
-  );
+  const updatedStudents = clas
+    .data()
+    .students.filter((s) => s.id !== studentId);
 
   await updateDoc(doc(db, "classes", classId), {
-    students: updatedStudents
+    students: updatedStudents,
   });
 };
 
@@ -73,9 +78,10 @@ const studentsFromClass = async (classId) => {
       return {
         id: s.id,
         first_name: student.first_name,
-        last_name: student.last_name
+        last_name: student.last_name,
+        grade: s.grade,
       };
-    })
+    }),
   );
 
   return results.filter(Boolean);
