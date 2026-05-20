@@ -34,4 +34,10 @@ const updateTeacher = async (teacherId, updatedFields) => {
   await updateDoc(doc(db, "teachers", teacherId), updatedFields);
 };
 
-export { fetchAllTeachers, teacherFromId, addTeacher, deleteTeacher };
+export {
+  fetchAllTeachers,
+  teacherFromId,
+  addTeacher,
+  deleteTeacher,
+  updateTeacher,
+};
