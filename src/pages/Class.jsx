@@ -1,14 +1,35 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { classFromId } from "../util/ClassServices";
+import {
+  classFromId,
+  removeStudentFromClass,
+  studentsFromClass,
+} from "../util/ClassServices";
 import { teacherFromId } from "../util/TeacherServices";
+import StudentRoster from "../components/StudentRoster";
+
+import "../styles/class.css";
 
 export default function Class() {
   const [clas, setClas] = useState(null);
   const [teacher, setTeacher] = useState(null);
+  const [students, setStudents] = useState([]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("class");
+
+  const handleDeleteStudentFromRoster = async (studentId) => {
+    try {
+      await removeStudentFromClass(clas.id, studentId);
+
+      setStudents(students.filter((s) => s.id !== studentId));
+    } catch (e) {
+      console.error(
+        "Error removing student from class: ",
+        e.message || "No error message found",
+      );
+    }
+  };
 
   useEffect(() => {
     const loadClassInfo = async () => {
@@ -23,7 +44,6 @@ export default function Class() {
           id: classData.id,
           name: classData.name,
           room: classData.room,
-          students: classData.students,
           teacher_id: classData.teacher_id,
         });
 
@@ -38,10 +58,15 @@ export default function Class() {
           id: teacherData.id,
           name: teacherName,
         });
+
+        const studentData = await studentsFromClass(classData.id);
+        setStudents(studentData);
+        console.log("Student data: ", studentData);
       } catch (e) {
         console.error("Error fetching data: ", e.message ?? "No error message");
       }
     };
+
     loadClassInfo();
   }, [query]);
 
@@ -56,6 +81,10 @@ export default function Class() {
         <h2 className="teacher-name">Assigned Teacher: {teacher.name}</h2>
         <h2 className="room-number">{clas.room}</h2>
       </div>
+      <StudentRoster
+        students={students}
+        handleDeleteStudentFromRoster={handleDeleteStudentFromRoster}
+      />
     </div>
   );
 }
