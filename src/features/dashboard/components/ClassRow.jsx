@@ -17,7 +17,9 @@ export default function ClassRow({ cls, teacher, onSelect }) {
       <div className="class-row-right">
         {/* TODO (Firebase): teacher name comes from teachers collection lookup by teacherId */}
         <div className="teacher-name">
-          {teacher ? teacher.name : "No teacher assigned"}
+          {teacher
+            ? `${teacher.first_name} ${teacher.last_name}`.trim()
+            : "No teacher assigned"}
         </div>
         <div>
           {studentCount} student{studentCount !== 1 ? "s" : ""}

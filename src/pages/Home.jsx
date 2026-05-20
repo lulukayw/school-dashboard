@@ -10,6 +10,7 @@ import "../styles/dashboard.css";
 import { fetchAllStudents } from "../util/StudentServices";
 import { fetchAllTeachers } from "../util/TeacherServices";
 import { fetchAllClasses } from "../util/ClassServices";
+import ClassList from "../components/ClassList";
 
 // NOTE: Events are not yet in the service layer — using empty array until EventServices is added
 // TODO: import { fetchAllEvents } from "../util/EventServices" when teammate creates it
@@ -23,7 +24,7 @@ export default function Home() {
   const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [events, setEvents] = useState([]);  // TODO: populate from EventServices
+  const [events, setEvents] = useState([]); // TODO: populate from EventServices
   const [loading, setLoading] = useState(true);
 
   // --- Fetch all data on page load ---
@@ -54,7 +55,7 @@ export default function Home() {
   const filteredClasses = classes.filter(
     (cls) =>
       cls.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cls.room?.toLowerCase().includes(searchQuery.toLowerCase())
+      cls.room?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   // Quick action handlers
@@ -117,21 +118,7 @@ export default function Home() {
 
           {/* Class List */}
           {/* teacher_id matches Firestore field name in classes collection */}
-          <div className="class-list">
-            {filteredClasses.map((cls) => (
-              <ClassRow
-                key={cls.id}
-                cls={cls}
-                teacher={getTeacher(cls.teacher_id)}
-                onSelect={() => navigate("/class")}
-              />
-            ))}
-            {filteredClasses.length === 0 && (
-              <p style={{ color: "#888", fontSize: "0.9rem" }}>
-                No classes match your search.
-              </p>
-            )}
-          </div>
+          <ClassList classes={filteredClasses} teachers={teachers} />
         </>
       )}
 
@@ -140,10 +127,18 @@ export default function Home() {
       <div className="quick-actions-bar">
         <div className="quick-actions-title">Quick Actions</div>
         <div className="quick-actions-buttons">
-          <button className="btn-action" onClick={handleAddStudent}>Add Students</button>
-          <button className="btn-action" onClick={handleAddTeacher}>Add Teachers</button>
-          <button className="btn-action" onClick={handleCreateClass}>Create Classes</button>
-          <button className="btn-action" onClick={handleCreateEvent}>Create Events</button>
+          <button className="btn-action" onClick={handleAddStudent}>
+            Add Students
+          </button>
+          <button className="btn-action" onClick={handleAddTeacher}>
+            Add Teachers
+          </button>
+          <button className="btn-action" onClick={handleCreateClass}>
+            Create Classes
+          </button>
+          <button className="btn-action" onClick={handleCreateEvent}>
+            Create Events
+          </button>
         </div>
       </div>
     </>
