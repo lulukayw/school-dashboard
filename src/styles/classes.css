@@ -20,7 +20,14 @@ button:hover {
   gap: 10px;
 }
 
+.class-row-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .class-row {
+  flex: 1;
   background: #e8eaf0;
   border-radius: 4px;
   padding: 12px 16px;
@@ -53,6 +60,14 @@ button:hover {
 .class-row-right .teacher-name {
   font-weight: 600;
   margin-bottom: 12px;
+}
+
+.delete-class-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  min-width: 36px;
 }
 
 .show-form-btn {
