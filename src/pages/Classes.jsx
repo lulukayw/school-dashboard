@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchAllClasses } from "../util/ClassServices";
+import { deleteClass, fetchAllClasses } from "../util/ClassServices";
 import { fetchAllTeachers } from "../util/TeacherServices";
 import ClassList from "../components/ClassList";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,23 @@ export default function Classes() {
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [showForm, setShowForm] = useState(false);
+
+  const handleDeleteClass = async (classId) => {
+    const previousClasses = classes;
+
+    setClasses((currentClasses) =>
+      currentClasses.filter((currentClass) => currentClass.id !== classId),
+    );
+
+    try {
+      await deleteClass(classId);
+    } catch (e) {
+      setClasses(previousClasses);
+      console.error(
+        "Error deleting class from database: " + (e.message ?? "Unknown error"),
+      );
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +85,11 @@ export default function Classes() {
 
   return (
     <>
-      <ClassList classes={classes} teachers={teachers} />
+      <ClassList
+        classes={classes}
+        teachers={teachers}
+        handleDeleteClass={handleDeleteClass}
+      />
       {!showForm && (
         <button className="show-form-btn" onClick={() => setShowForm(true)}>
           Create new class

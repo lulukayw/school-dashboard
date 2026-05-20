@@ -9,7 +9,11 @@ import {
 } from "../util/ClassServices";
 import { fetchAllStudents } from "../util/StudentServices";
 import { fetchAllTeachers, teacherFromId } from "../util/TeacherServices";
-import { fetchAssignments, updateScore, addAssignment } from "../util/AssignmentServices";
+import {
+  fetchAssignments,
+  updateScore,
+  addAssignment,
+} from "../util/AssignmentServices";
 import StudentRoster from "../components/StudentRoster";
 import AssignmentRoster from "../components/AssignmentRoster";
 import GradeDisplay from "../components/GradeDisplay";
@@ -62,7 +66,12 @@ export default function Class() {
 
   // Calculate the class average grade as a percentage
   const calculateClassGrade = () => {
-    if (!students || students.length === 0 || !assignments || assignments.length === 0) {
+    if (
+      !students ||
+      students.length === 0 ||
+      !assignments ||
+      assignments.length === 0
+    ) {
       return null;
     }
 
@@ -72,7 +81,9 @@ export default function Class() {
 
     if (studentGrades.length === 0) return null;
 
-    const average = studentGrades.reduce((sum, grade) => sum + grade, 0) / studentGrades.length;
+    const average =
+      studentGrades.reduce((sum, grade) => sum + grade, 0) /
+      studentGrades.length;
     return average;
   };
   const studentIdsInClass = new Set(students.map((student) => student.id));
@@ -275,6 +286,7 @@ export default function Class() {
           ) : (
             <h1 className="class-name">{clas.name}</h1>
           )}
+
           <FilePenLine
             className="edit-class-btn"
             onClick={isEditingClass ? undefined : startEditingClass}
@@ -335,9 +347,7 @@ export default function Class() {
               <h3 className="room-number">Room {clas.room}</h3>
             )}
           </div>
-          <GradeDisplay
-          classGrade={calculateClassGrade()}
-           />
+          <GradeDisplay classGrade={calculateClassGrade()} />
         </div>
         {isEditingClass && (
           <div className="class-edit-actions">
@@ -386,7 +396,7 @@ export default function Class() {
       <div className="assignment-section">
         <AssignmentRoster
           assignments={assignments}
-          handleDeleteAssignment={() => { }}
+          handleDeleteAssignment={() => {}}
           selectedStudent={selectedStudent}
           onGradeChange={handleGradeChange}
           onAddAssignment={handleAddAssignment}
