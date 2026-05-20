@@ -4,21 +4,23 @@ import {
   classFromId,
   addStudentToClass,
   removeStudentFromClass,
+  updateClass,
   studentsFromClass,
 } from "../util/ClassServices";
 import { fetchAllStudents } from "../util/StudentServices";
-import { teacherFromId } from "../util/TeacherServices";
 import { fetchAssignments, updateScore, addAssignment, deleteAssignment } from "../util/AssignmentServices";
+import { fetchAllTeachers, teacherFromId } from "../util/TeacherServices";
 import StudentRoster from "../components/StudentRoster";
 import AssignmentRoster from "../components/AssignmentRoster";
 import GradeDisplay from "../components/GradeDisplay";
 import StudentSearch from "../components/StudentSearch";
-
+import { FilePenLine } from "lucide-react";
 import "../styles/class.css";
 
 export default function Class() {
   const [clas, setClas] = useState(null);
   const [teacher, setTeacher] = useState(null);
+  const [teachers, setTeachers] = useState([]);
   const [students, setStudents] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -26,6 +28,12 @@ export default function Class() {
   const [studentSearch, setStudentSearch] = useState("");
   const [isLoadingStudents, setIsLoadingStudents] = useState(false);
   const [showStudentSearch, setShowStudentSearch] = useState(false);
+  const [isEditingClass, setIsEditingClass] = useState(false);
+  const [classDraft, setClassDraft] = useState({
+    name: "",
+    room: "",
+    teacher_id: "",
+  });
 
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("class");
@@ -75,6 +83,57 @@ export default function Class() {
 
     return fullName.includes(studentSearch.trim().toLowerCase());
   });
+
+  const startEditingClass = () => {
+    setClassDraft({
+      name: clas.name ?? "",
+      room: clas.room ?? "",
+      teacher_id: clas.teacher_id ?? "",
+    });
+    setIsEditingClass(true);
+  };
+
+  const cancelEditingClass = () => {
+    setIsEditingClass(false);
+  };
+
+  const saveClassEdits = async (event) => {
+    event.preventDefault();
+
+    console.log("Class draft is: ", classDraft);
+
+    try {
+      await updateClass(clas.id, {
+        name: classDraft.name.trim(),
+        room: classDraft.room,
+        teacher_id: classDraft.teacher_id,
+      });
+
+      const nextTeacher = teachers.find(
+        (currentTeacher) => currentTeacher.id === classDraft.teacher_id,
+      );
+
+      setClas((currentClas) => ({
+        ...currentClas,
+        name: classDraft.name.trim(),
+        room: classDraft.room.trim(),
+        teacher_id: classDraft.teacher_id,
+      }));
+
+      setTeacher(
+        nextTeacher
+          ? {
+              id: nextTeacher.id,
+              name: `${nextTeacher.first_name} ${nextTeacher.last_name}`.trim(),
+            }
+          : null,
+      );
+
+      setIsEditingClass(false);
+    } catch (e) {
+      console.error("Error updating class: ", e.message ?? "No error message");
+    }
+  };
 
   const handleDeleteStudentFromRoster = async (studentId) => {
     try {
@@ -182,6 +241,9 @@ export default function Class() {
           name: teacherName,
         });
 
+        const allTeacherData = await fetchAllTeachers();
+        setTeachers(allTeacherData);
+
         const studentData = await studentsFromClass(classData.id);
         const studentsArray = studentData.map((s) => ({
           id: s.id,
@@ -212,14 +274,102 @@ export default function Class() {
 
   return (
     <div>
-      <h1 className="class-name">{clas.name}</h1>
-      <div className="class-subinfo">
-        <h2 className="teacher-name">Assigned Teacher: {teacher.name}</h2>
-        <h2 className="room-number"> Room {clas.room}</h2>
-        <GradeDisplay
+      <form className="class-info-form" onSubmit={saveClassEdits}>
+        <div className="class-info-header">
+          {isEditingClass ? (
+            <input
+              className="class-name-input"
+              type="text"
+              value={classDraft.name}
+              onChange={(event) =>
+                setClassDraft((currentDraft) => ({
+                  ...currentDraft,
+                  name: event.target.value,
+                }))
+              }
+            />
+          ) : (
+            <h1 className="class-name">{clas.name}</h1>
+          )}
+          <FilePenLine
+            className="edit-class-btn"
+            onClick={isEditingClass ? undefined : startEditingClass}
+          />
+        </div>
+        <div className="class-subinfo">
+          <div className="class-subinfo-field">
+            <h2
+              className={
+                isEditingClass ? "class-subinfo-label" : "class-subinfo-heading"
+              }
+            >
+              Assigned Teacher
+            </h2>
+            {isEditingClass ? (
+              <select
+                className="class-input"
+                value={classDraft.teacher_id}
+                onChange={(event) =>
+                  setClassDraft((currentDraft) => ({
+                    ...currentDraft,
+                    teacher_id: event.target.value,
+                  }))
+                }
+              >
+                <option value="">Select a teacher</option>
+                {teachers.map((currentTeacher) => (
+                  <option key={currentTeacher.id} value={currentTeacher.id}>
+                    {`${currentTeacher.first_name} ${currentTeacher.last_name}`.trim()}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <h3 className="teacher-name">{teacher.name}</h3>
+            )}
+          </div>
+          <div className="class-subinfo-field">
+            <h2
+              className={
+                isEditingClass ? "class-subinfo-label" : "class-subinfo-heading"
+              }
+            >
+              Room Number
+            </h2>
+            {isEditingClass ? (
+              <input
+                className="class-input"
+                type="number"
+                value={classDraft.room}
+                onChange={(event) =>
+                  setClassDraft((currentDraft) => ({
+                    ...currentDraft,
+                    room: event.target.value,
+                  }))
+                }
+              />
+            ) : (
+              <h3 className="room-number">Room {clas.room}</h3>
+            )}
+          </div>
+          <GradeDisplay
           classGrade={calculateClassGrade()}
-        />
-      </div>
+           />
+        </div>
+        {isEditingClass && (
+          <div className="class-edit-actions">
+            <button type="submit" className="class-edit-save-btn">
+              Save
+            </button>
+            <button
+              type="button"
+              className="class-edit-cancel-btn"
+              onClick={cancelEditingClass}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </form>
       <StudentRoster
         students={students}
         handleDeleteStudentFromRoster={handleDeleteStudentFromRoster}
