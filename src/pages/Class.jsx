@@ -22,7 +22,7 @@ export default function Class() {
     try {
       await removeStudentFromClass(clas.id, studentId);
 
-      setStudents(students.filter((s) => s.id !== studentId));
+      setStudents((students) => students.filter((s) => s.id !== studentId));
     } catch (e) {
       console.error(
         "Error removing student from class: ",

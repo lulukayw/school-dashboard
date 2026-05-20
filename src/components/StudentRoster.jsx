@@ -31,7 +31,7 @@ export default function StudentRoster({
                 <Trash2
                   className="trash-icon"
                   size={16}
-                  onClick={() => handleDeleteStudentFromRoster}
+                  onClick={() => handleDeleteStudentFromRoster(student.id)}
                 />
               </div>
               <div className="roster-cell roster-name-cell" role="cell">
