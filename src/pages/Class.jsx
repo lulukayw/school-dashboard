@@ -2,14 +2,17 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   classFromId,
+  addStudentToClass,
   removeStudentFromClass,
   studentsFromClass,
 } from "../util/ClassServices";
+import { fetchAllStudents } from "../util/StudentServices";
 import { teacherFromId } from "../util/TeacherServices";
 import { fetchAssignments, updateScore, addAssignment } from "../util/AssignmentServices";
 import StudentRoster from "../components/StudentRoster";
 import AssignmentRoster from "../components/AssignmentRoster";
 import GradeDisplay from "../components/GradeDisplay";
+import StudentSearch from "../components/StudentSearch";
 
 import "../styles/class.css";
 
@@ -19,6 +22,10 @@ export default function Class() {
   const [students, setStudents] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [allStudents, setAllStudents] = useState([]);
+  const [studentSearch, setStudentSearch] = useState("");
+  const [isLoadingStudents, setIsLoadingStudents] = useState(false);
+  const [showStudentSearch, setShowStudentSearch] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("class");
@@ -59,12 +66,21 @@ export default function Class() {
     const average = studentGrades.reduce((sum, grade) => sum + grade, 0) / studentGrades.length;
     return average;
   };
+  const studentIdsInClass = new Set(students.map((student) => student.id));
+
+  const filteredStudents = allStudents.filter((student) => {
+    const fullName = `${student.first_name ?? ""} ${student.last_name ?? ""}`
+      .trim()
+      .toLowerCase();
+
+    return fullName.includes(studentSearch.trim().toLowerCase());
+  });
 
   const handleDeleteStudentFromRoster = async (studentId) => {
     try {
       await removeStudentFromClass(clas.id, studentId);
 
-      setStudents(students.filter((s) => s.id !== studentId));
+      setStudents((students) => students.filter((s) => s.id !== studentId));
     } catch (e) {
       console.error(
         "Error removing student from class: ",
@@ -96,9 +112,34 @@ export default function Class() {
     }
   };
 
+  const handleAddStudentToRoster = async (studentId) => {
+    try {
+      await addStudentToClass(clas.id, studentId);
+
+      const addedStudent = allStudents.find(
+        (student) => student.id === studentId,
+      );
+      if (!addedStudent) return;
+
+      setStudents((currentStudents) => {
+        if (currentStudents.some((student) => student.id === studentId)) {
+          return currentStudents;
+        }
+
+        return [...currentStudents, addedStudent];
+      });
+    } catch (e) {
+      console.error(
+        "Error adding student to class: ",
+        e.message || "No error message found",
+      );
+    }
+  };
+
   useEffect(() => {
     const loadClassInfo = async () => {
       try {
+        setIsLoadingStudents(true);
         const classData = await classFromId(query);
 
         if (!classData) return;
@@ -125,14 +166,23 @@ export default function Class() {
         });
 
         const studentData = await studentsFromClass(classData.id);
+        const studentsArray = studentData.map((s) => ({
+          id: s.id,
+          first_name: s.first_name,
+          last_name: s.last_name,
+          grade: s.grade,
+        }));
         setStudents(studentData);
         console.log("Student data: ", studentData);
 
         const assignmentData = await fetchAssignments(classData.id);
         setAssignments(assignmentData);
-        console.log("Assignment data: ", assignmentData);
+        const allStudentData = await fetchAllStudents();
+        setAllStudents(allStudentData);
       } catch (e) {
         console.error("Error fetching data: ", e.message ?? "No error message");
+      } finally {
+        setIsLoadingStudents(false);
       }
     };
 
@@ -148,7 +198,7 @@ export default function Class() {
       <h1 className="class-name">{clas.name}</h1>
       <div className="class-subinfo">
         <h2 className="teacher-name">Assigned Teacher: {teacher.name}</h2>
-        <h2 className="room-number">{clas.room}</h2>
+        <h2 className="room-number"> Room {clas.room}</h2>
         <GradeDisplay
           classGrade={calculateClassGrade()}
         />
@@ -160,6 +210,28 @@ export default function Class() {
         selectedStudent={selectedStudent}
         calculateStudentGrade={calculateStudentGrade}
       />
+
+      {!showStudentSearch && (
+        <button
+          className="show-search-btn"
+          onClick={() => setShowStudentSearch(true)}
+        >
+          Add student
+        </button>
+      )}
+
+      {showStudentSearch && (
+        <StudentSearch
+          studentSearch={studentSearch}
+          setStudentSearch={setStudentSearch}
+          filteredStudents={filteredStudents}
+          isLoadingStudents={isLoadingStudents}
+          handleAddStudentToRoster={handleAddStudentToRoster}
+          studentIdsInClass={studentIdsInClass}
+          onClose={() => setShowStudentSearch(false)}
+        />
+      )}
+
       <div className="assignment-section">
         <AssignmentRoster
           assignments={assignments}
