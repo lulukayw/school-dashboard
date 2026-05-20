@@ -20,6 +20,13 @@
   grid-template-columns: 48px minmax(220px, 1fr) 120px;
   gap: 8px 12px;
   align-items: center;
+  transition: background-color 0.2s;
+}
+
+.roster-row.selected {
+  background-color: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-radius: 12px;
 }
 
 .roster-header-row {

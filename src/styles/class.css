@@ -3,6 +3,12 @@
   gap: 20vw;
 }
 
+.assignment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .student-search-panel {
   margin-top: 24px;
   padding: 16px;
