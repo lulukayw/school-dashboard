@@ -89,12 +89,19 @@
 
 .roster-grade-cell {
     display: flex;
-    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+}
+
+.grade-max {
+    color: #6b7280;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .grade-input {
     width: 100%;
-    max-width: 100px;
+    max-width: 50px;
     padding: 8px 10px;
     border: 1px solid #d8dde6;
     border-radius: 8px;

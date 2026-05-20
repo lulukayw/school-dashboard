@@ -8,7 +8,7 @@ import {
 } from "../util/ClassServices";
 import { fetchAllStudents } from "../util/StudentServices";
 import { teacherFromId } from "../util/TeacherServices";
-import { fetchAssignments, updateScore, addAssignment } from "../util/AssignmentServices";
+import { fetchAssignments, updateScore, addAssignment, deleteAssignment } from "../util/AssignmentServices";
 import StudentRoster from "../components/StudentRoster";
 import AssignmentRoster from "../components/AssignmentRoster";
 import GradeDisplay from "../components/GradeDisplay";
@@ -90,9 +90,15 @@ export default function Class() {
   };
 
   const handleGradeChange = async (assignmentId, studentId, score) => {
+    setAssignments((prev) =>
+      prev.map((a) =>
+        a.id === assignmentId
+          ? { ...a, scores: { ...a.scores, [studentId]: score } }
+          : a
+      )
+    );
     try {
       await updateScore(clas.id, assignmentId, studentId, score);
-      // Refresh assignments to show updated grades
       const updated = await fetchAssignments(clas.id);
       setAssignments(updated);
     } catch (e) {
@@ -111,6 +117,17 @@ export default function Class() {
       alert("Failed to add assignment");
     }
   };
+
+  const handleDeleteAssignment = async (assignmentId) => {
+    try {
+      await deleteAssignment(clas.id, assignmentId);
+      const updated = await fetchAssignments(clas.id);
+      setAssignments(updated)
+    } catch (e) {
+      console.error("Error deleting assignment:", e.message);
+      alert("Failed to delete assignment");
+    }
+  }
 
   const handleAddStudentToRoster = async (studentId) => {
     try {
@@ -235,7 +252,7 @@ export default function Class() {
       <div className="assignment-section">
         <AssignmentRoster
           assignments={assignments}
-          handleDeleteAssignment={() => { }}
+          handleDeleteAssignment={handleDeleteAssignment}
           selectedStudent={selectedStudent}
           onGradeChange={handleGradeChange}
           onAddAssignment={handleAddAssignment}
