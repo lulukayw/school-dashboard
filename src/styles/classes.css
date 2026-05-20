@@ -1,3 +1,7 @@
+button {
+  cursor: pointer;
+}
+
 /* --- Class List --- */
 .class-list {
   display: flex;
@@ -38,4 +42,11 @@
 .class-row-right .teacher-name {
   font-weight: 600;
   margin-bottom: 12px;
+}
+
+.show-form-btn {
+  width: 10vw;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
 }

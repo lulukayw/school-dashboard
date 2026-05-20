@@ -1,0 +1,25 @@
+.form-container {
+  width: 20vw;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  padding: 10px;
+  background-color: #e8eaf0;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-exit-button {
+  cursor: pointer;
+}
+
+.form-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+  justify-content: space-between;
+}

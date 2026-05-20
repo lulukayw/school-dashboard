@@ -84,7 +84,9 @@ export default function Classes() {
         ))}
       </div>
       {!showForm && (
-        <button onClick={() => setShowForm(true)}>Create new class</button>
+        <button className="show-form-btn" onClick={() => setShowForm(true)}>
+          Create new class
+        </button>
       )}
       {showForm && (
         <CreateClassForm
