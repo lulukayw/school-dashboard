@@ -1,0 +1,55 @@
+.student-list {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.student-row {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  gap: 12px;
+  transition: background 0.15s;
+}
+
+.student-row:hover {
+  background: #fafafa;
+}
+.student-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.btn-edit,
+.btn-delete {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.btn-delete:hover {
+  background: #fde8e8;
+  border-radius: 4px;
+}
+.students-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-bar {
+  width: 100%;
+  box-sizing: border-box;
+}
