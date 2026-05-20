@@ -4,8 +4,22 @@ import "./styles/StudentRoster.css";
 export default function StudentRoster({
   students = [],
   handleDeleteStudentFromRoster,
+  onStudentClick = null,
+  selectedStudent = null,
+  calculateStudentGrade = null,
 }) {
   const hasStudents = students.length > 0;
+
+  const handleRowClick = (student) => {
+    if (!onStudentClick) return;
+
+    // Toggle selection: if clicking the same student, deselect them
+    if (selectedStudent && selectedStudent.id === student.id) {
+      onStudentClick(null);
+    } else {
+      onStudentClick(student);
+    }
+  };
 
   return (
     <>
@@ -26,12 +40,21 @@ export default function StudentRoster({
 
         {hasStudents ? (
           students.map((student) => (
-            <div className="roster-row" role="row" key={student.id}>
+            <div
+              className={`roster-row ${selectedStudent && selectedStudent.id === student.id ? 'selected' : ''}`}
+              role="row"
+              key={student.id}
+              onClick={() => handleRowClick(student)}
+              style={{ cursor: onStudentClick ? "pointer" : "default" }}
+            >
               <div className="roster-cell roster-icon-cell" role="cell">
                 <Trash2
                   className="trash-icon"
                   size={16}
-                  onClick={() => handleDeleteStudentFromRoster}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteStudentFromRoster(student.id);
+                  }}
                 />
               </div>
               <div className="roster-cell roster-name-cell" role="cell">
@@ -39,7 +62,12 @@ export default function StudentRoster({
               </div>
               <div className="roster-cell roster-grade-cell" role="cell">
                 <span className="roster-grade-text">
-                  {student.grade ?? "—"}
+                  {calculateStudentGrade
+                    ? (() => {
+                      const g = calculateStudentGrade(student);
+                      return g !== null ? `${Math.round(g)}%` : "—";
+                    })()
+                    : "—"}
                 </span>
               </div>
             </div>
