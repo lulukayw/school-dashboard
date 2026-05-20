@@ -79,6 +79,8 @@
 .class-edit-save-btn:hover,
 .class-edit-cancel-btn:hover {
   background: #c5c9d8;
+}
+
 .assignment-section {
   display: flex;
   flex-direction: column;
