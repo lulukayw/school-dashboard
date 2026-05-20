@@ -24,6 +24,7 @@ export default function CreateClassForm({
           name="class-name"
           type="text"
           value={className}
+          required
           onChange={(e) => setClassName(e.target.value)}
         />
       </div>
@@ -34,6 +35,7 @@ export default function CreateClassForm({
           id="room-number"
           name="room-number"
           type="text"
+          required
           value={roomNumber}
           onChange={(e) => setRoomNumber(e.target.value)}
         />
@@ -46,6 +48,7 @@ export default function CreateClassForm({
           name="teacher-id"
           value={selectedTeacherId}
           onChange={(e) => setSelectedTeacherId(e.target.value)}
+          required
         >
           <option value="">Select a teacher</option>
           {teachers.map((t) => (
