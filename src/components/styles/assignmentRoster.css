@@ -47,7 +47,7 @@
 
 .roster-row {
     display: grid;
-    grid-template-columns: 48px minmax(220px, 1fr) 1fr 1fr;
+    grid-template-columns: 28px 28px minmax(180px, 1fr) 1fr 1fr minmax(120px, auto);
     gap: 8px 12px;
     align-items: center;
 }
@@ -159,6 +159,6 @@
     text-align: center;
 }
 
-.trash-icon {
+.trash-icon, .edit-icon {
     cursor: pointer;
 }
