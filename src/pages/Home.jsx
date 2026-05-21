@@ -36,9 +36,9 @@ export default function Home() {
           fetchAllClasses(),
           fetchAllEvents(),
         ]);
-        setStudents(studentData);
-        setTeachers(teacherData);
-        setClasses(classData);
+        setStudents(studentData.sort((a,b) => a.last_name.localeCompare(b.last_name)));
+        setTeachers(teacherData.sort((a,b) => a.last_name.localeCompare(b.last_name)));
+        setClasses(classData.sort((a,b) => a.name.localeCompare(b.name)));
 
         const now = new Date();
         const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);

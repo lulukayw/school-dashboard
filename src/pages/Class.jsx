@@ -388,7 +388,7 @@ export default function Class() {
         )}
       </form>
       <StudentRoster
-        students={students}
+        students={students.sort((a,b) => a.last_name.localeCompare(b.last_name))}
         handleDeleteStudentFromRoster={handleDeleteStudentFromRoster}
         onStudentClick={setSelectedStudent}
         selectedStudent={selectedStudent}

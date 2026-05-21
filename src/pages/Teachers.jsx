@@ -25,7 +25,7 @@ export default function Teachers() {
       id: doc.id,
       ...doc.data(),
     }));
-    setTeachers(data);
+    setTeachers(data.sort((a,b) => a.last_name.localeCompare(b.last_name)));
   };
 
   useEffect(() => {

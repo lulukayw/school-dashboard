@@ -70,10 +70,10 @@ export default function Classes() {
     const loadClassesAndTeachers = async () => {
       try {
         const classData = await fetchAllClasses();
-        setClasses(classData);
+        setClasses(classData.sort((a,b) => a.name.localeCompare(b.name)));
 
         const teacherData = await fetchAllTeachers();
-        setTeachers(teacherData);
+        setTeachers(teacherData.sort((a,b) => a.last_name.localeCompare(b.last_name)));
 
         console.log("teacher data is (classes): ", teacherData);
       } catch (e) {

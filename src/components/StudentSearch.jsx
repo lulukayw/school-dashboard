@@ -40,7 +40,12 @@ export default function StudentSearch({
         {isLoadingStudents ? (
           <div className="student-search-empty" role="row">Loading students...</div>
         ) : filteredStudents.length > 0 ? (
-          filteredStudents.map((student) => {
+          filteredStudents.sort((a, b) => {
+            const aAdded = studentIdsInClass.has(a.id);
+            const bAdded = studentIdsInClass.has(b.id);
+            if (aAdded !== bAdded) return aAdded ? 1 : -1;
+            return (a.last_name ?? "").localeCompare(b.last_name ?? "");
+          }).map((student) => {
             const isAlreadyInClass = studentIdsInClass.has(student.id);
 
             return (
