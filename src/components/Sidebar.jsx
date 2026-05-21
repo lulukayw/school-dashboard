@@ -37,13 +37,6 @@ export default function Sidebar() {
       >
         Classes
       </NavLink>
-      {/* TODO: add Departments NavLink when that route is created in main.jsx */}
-      <span
-        className="sidebar-link"
-        style={{ color: "#999", cursor: "default" }}
-      >
-        Departments
-      </span>
       <NavLink
         to="/students"
         className={({ isActive }) =>
