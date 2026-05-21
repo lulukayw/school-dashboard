@@ -79,7 +79,7 @@ export default function Home() {
         <input
           className="search-input"
           type="text"
-          placeholder="Global Search"
+          placeholder="Class Search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
