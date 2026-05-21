@@ -12,8 +12,7 @@ import { fetchAllTeachers } from "../util/TeacherServices";
 import { fetchAllClasses } from "../util/ClassServices";
 import ClassList from "../components/ClassList";
 
-// NOTE: Events are not yet in the service layer — using empty array until EventServices is added
-// TODO: import { fetchAllEvents } from "../util/EventServices" when teammate creates it
+import { fetchAllEvents } from "../util/EventsServices";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -24,21 +23,29 @@ export default function Home() {
   const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [events, setEvents] = useState([]); // TODO: populate from EventServices
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // --- Fetch all data on page load ---
   useEffect(() => {
     async function loadData() {
       try {
-        const [studentData, teacherData, classData] = await Promise.all([
+        const [studentData, teacherData, classData, eventData] = await Promise.all([
           fetchAllStudents(),
           fetchAllTeachers(),
           fetchAllClasses(),
+          fetchAllEvents(),
         ]);
         setStudents(studentData);
         setTeachers(teacherData);
         setClasses(classData);
+
+        const now = new Date();
+        const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        const upcoming = eventData
+          .filter((e) => e.start && e.start >= now && e.start <= in7Days)
+          .sort((a, b) => a.start - b.start);
+        setEvents(upcoming);
       } catch (err) {
         console.error("Error loading dashboard data:", err);
       } finally {
@@ -106,8 +113,15 @@ export default function Home() {
               title="Upcoming Events"
               items={
                 events.length > 0
-                  ? events.map((e) => e.name)
-                  : ["No events yet — check back soon"]
+                  ? events.map((e) => {
+                      const dateStr = e.start.toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                      });
+                      return `${e.name} — ${dateStr}`;
+                    })
+                  : ["No events in the next 7 days"]
               }
               linkLabel="View calendar"
               onLinkClick={() => navigate("/calendar")}
