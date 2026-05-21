@@ -25,7 +25,7 @@ export default function Students() {
       id: doc.id,
       ...doc.data(),
     }));
-    setStudents(data);
+    setStudents(data.sort((a,b) => a.last_name.localeCompare(b.last_name)));
   };
 
   useEffect(() => {
