@@ -94,31 +94,31 @@ export default function AssignmentRoster({
                 />
             )}
             <div className="assignment-roster" role="table">
-                <div className="roster-row roster-header-row" role="row">
-                    <div className="roster-cell roster-cell-empty" role="columnheader"></div>
-                    <div className="roster-cell roster-cell-empty" role="columnheader"></div>
-                    <div className="roster-cell roster-header" role="columnheader">Assignment Name</div>
+                <div className="assignment-roster-row assignment-roster-header-row" role="row">
+                    <div className="assignment-roster-cell assignment-roster-cell-empty" role="columnheader"></div>
+                    <div className="assignment-roster-cell assignment-roster-cell-empty" role="columnheader"></div>
+                    <div className="assignment-roster-cell assignment-roster-header" role="columnheader">Assignment Name</div>
                     {!selectedStudent ? (
                         <>
-                            <div className="roster-cell roster-header" role="columnheader">Max Score</div>
-                            <div className="roster-cell roster-header" role="columnheader">Category</div>
+                            <div className="assignment-roster-cell assignment-roster-header" role="columnheader">Max Score</div>
+                            <div className="assignment-roster-cell assignment-roster-header" role="columnheader">Category</div>
                         </>
                     ) : (
                         <>
-                            <div className="roster-cell roster-header" role="columnheader">Points</div>
-                            <div className="roster-cell roster-header" role="columnheader">Grade</div>
+                            <div className="assignment-roster-cell assignment-roster-header" role="columnheader">Points</div>
+                            <div className="assignment-roster-cell assignment-roster-header" role="columnheader">Grade</div>
                         </>
                     )}
-                    <div className="roster-cell roster-cell-empty" role="columnheader"></div>
+                    <div className="assignment-roster-cell assignment-roster-cell-empty" role="columnheader"></div>
                 </div>
 
                 {hasAssignments ? (
                     assignments.map((assignment) => {
                         const isEditing = editingAssignment === assignment.id;
                         return (
-                            <div className="roster-row" role="row" key={assignment.id}>
+                            <div className="assignment-roster-row" role="row" key={assignment.id}>
                                 {/* Delete */}
-                                <div className="roster-cell roster-icon-cell" role="cell">
+                                <div className="assignment-roster-cell assignment-roster-icon-cell" role="cell">
                                     {!isEditing && (
                                         <Trash2
                                             className="trash-icon"
@@ -129,7 +129,7 @@ export default function AssignmentRoster({
                                 </div>
 
                                 {/* Edit pencil */}
-                                <div className="roster-cell roster-icon-cell" role="cell">
+                                <div className="assignment-roster-cell assignment-roster-icon-cell" role="cell">
                                     {!isEditing && (
                                         <FilePenLine
                                             className="edit-icon"
@@ -140,7 +140,7 @@ export default function AssignmentRoster({
                                 </div>
 
                                 {/* Name */}
-                                <div className="roster-cell roster-name-cell" role="cell">
+                                <div className="assignment-roster-cell assignment-roster-name-cell" role="cell">
                                     {isEditing ? (
                                         <input
                                             className="assignment-edit-input"
@@ -158,7 +158,7 @@ export default function AssignmentRoster({
                                 {!selectedStudent ? (
                                     <>
                                         {/* Max Score */}
-                                        <div className="roster-cell roster-score-cell" role="cell">
+                                        <div className="assignment-roster-cell assignment-roster-score-cell" role="cell">
                                             {isEditing ? (
                                                 <input
                                                     className="assignment-edit-input assignment-edit-input--short"
@@ -175,7 +175,7 @@ export default function AssignmentRoster({
                                         </div>
 
                                         {/* Category */}
-                                        <div className="roster-cell roster-category-cell" role="cell">
+                                        <div className="assignment-roster-cell assignment-roster-category-cell" role="cell">
                                             {isEditing ? (
                                                 <select
                                                     className="assignment-edit-input"
@@ -200,7 +200,7 @@ export default function AssignmentRoster({
                                 ) : (
                                     <>
                                         {/* Grade input (student selected view — unchanged) */}
-                                        <div className="roster-cell roster-grade-cell" role="cell">
+                                        <div className="assignment-roster-cell assignment-roster-grade-cell" role="cell">
                                             <input
                                                 type="number"
                                                 className="grade-input"
@@ -219,7 +219,7 @@ export default function AssignmentRoster({
                                             />
                                             <span className="grade-max">/ {assignment.max_score ?? "—"}</span>
                                         </div>
-                                        <div className="roster-cell grade-max" role="cell">
+                                        <div className="assignment-roster-cell grade-max" role="cell">
                                             {assignment.max_score && getStudentGrade(assignment) !== "—"
                                                 ? `${Math.round((getStudentGrade(assignment) / assignment.max_score) * 100)}%`
                                                 : "—"}
@@ -228,7 +228,7 @@ export default function AssignmentRoster({
                                 )}
 
                                 {/* Save / Cancel actions */}
-                                <div className="roster-cell roster-edit-actions" role="cell">
+                                <div className="assignment-roster-cell assignment-roster-edit-actions" role="cell">
                                     {isEditing && (
                                         <>
                                             <button

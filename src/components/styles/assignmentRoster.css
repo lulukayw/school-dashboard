@@ -40,54 +40,54 @@
     background: #fff;
 }
 
-.roster-row,
-.roster-cell {
+.assignment-roster-row,
+.assignment-roster-cell {
     display: block;
 }
 
-.roster-row {
+.assignment-roster-row {
     display: grid;
     grid-template-columns: 28px 28px minmax(180px, 1fr) 1fr 1fr minmax(120px, auto);
     gap: 8px 12px;
     align-items: center;
 }
 
-.roster-header-row {
+.assignment-roster-header-row {
     padding-bottom: 6px;
     border-bottom: 1px solid #e6ebf2;
 }
 
-.roster-header {
+.assignment-roster-header {
     font-weight: 600;
     color: #445066;
     font-size: 0.95rem;
 }
 
-.roster-cell {
+.assignment-roster-cell {
     padding: 10px 0;
 }
 
-.roster-cell-empty {
+.assignment-roster-cell-empty {
     padding: 0;
 }
 
-.roster-icon-cell {
+.assignment-roster-icon-cell {
     display: flex;
     justify-content: center;
 }
 
-.roster-name-cell {
+.assignment-roster-name-cell {
     color: #1f2937;
     font-weight: 500;
 }
 
-.roster-score-cell,
-.roster-category-cell {
+.assignment-roster-score-cell,
+.assignment-roster-category-cell {
     color: #6b7280;
     font-size: 0.95rem;
 }
 
-.roster-grade-cell {
+.assignment-roster-grade-cell {
     display: flex;
     align-items: center;
     gap: 6px;
