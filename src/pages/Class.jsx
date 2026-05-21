@@ -8,7 +8,7 @@ import {
   studentsFromClass,
 } from "../util/ClassServices";
 import { fetchAllStudents } from "../util/StudentServices";
-import { fetchAssignments, updateScore, addAssignment, deleteAssignment } from "../util/AssignmentServices";
+import { fetchAssignments, updateScore, addAssignment, deleteAssignment, updateAssignment } from "../util/AssignmentServices";
 import { fetchAllTeachers, teacherFromId } from "../util/TeacherServices";
 import StudentRoster from "../components/StudentRoster";
 import AssignmentRoster from "../components/AssignmentRoster";
@@ -130,9 +130,9 @@ export default function Class() {
       setTeacher(
         nextTeacher
           ? {
-              id: nextTeacher.id,
-              name: `${nextTeacher.first_name} ${nextTeacher.last_name}`.trim(),
-            }
+            id: nextTeacher.id,
+            name: `${nextTeacher.first_name} ${nextTeacher.last_name}`.trim(),
+          }
           : null,
       );
 
@@ -183,6 +183,17 @@ export default function Class() {
       alert("Failed to add assignment");
     }
   };
+
+  const handleEditAssignment = async (assignmentId, updates) => {
+    try {
+      await updateAssignment(clas.id, assignmentId, updates);
+      const updated = await fetchAssignments(clas.id);
+      setAssignments(updated);
+    } catch (e) {
+      console.error("Error updating assignment:", e.message);
+      alert("Failed to update assignment");
+    }
+  }
 
   const handleDeleteAssignment = async (assignmentId) => {
     try {
@@ -412,6 +423,7 @@ export default function Class() {
           selectedStudent={selectedStudent}
           onGradeChange={handleGradeChange}
           onAddAssignment={handleAddAssignment}
+          onEditAssignment={handleEditAssignment}
         />
       </div>
     </div>

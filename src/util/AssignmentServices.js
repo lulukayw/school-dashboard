@@ -48,10 +48,15 @@ const deleteAssignment = async (classId, assignmentId) => {
     );
 };
 
+const updateAssignment = async (classId, assignmentId, updatedFields) => {
+    await updateDoc(doc(db, "classes", classId, "assignments", assignmentId), updatedFields);
+}
+
 export {
     fetchAssignments,
     assignmentFromId,
     addAssignment,
     updateScore,
-    deleteAssignment
+    deleteAssignment,
+    updateAssignment
 };
