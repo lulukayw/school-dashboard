@@ -113,7 +113,7 @@ export default function AssignmentRoster({
                 </div>
 
                 {hasAssignments ? (
-                    assignments.map((assignment) => {
+                    assignments.sort((a, b) => a.timestamp - b.timestamp).map((assignment) => {
                         const isEditing = editingAssignment === assignment.id;
                         return (
                             <div className="assignment-roster-row" role="row" key={assignment.id}>

@@ -21,6 +21,7 @@ const addAssignment = async (classId, name, category, max_score) => {
         name,
         category,
         max_score,
+        timestamp: Date.now(),
         scores: {}
     }
     );
