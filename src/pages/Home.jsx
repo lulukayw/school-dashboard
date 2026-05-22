@@ -9,7 +9,7 @@ import "../styles/dashboard.css";
 // Firestore service functions built by teammate
 import { fetchAllStudents } from "../util/StudentServices";
 import { fetchAllTeachers } from "../util/TeacherServices";
-import { fetchAllClasses } from "../util/ClassServices";
+import { fetchAllClasses, deleteClass } from "../util/ClassServices";
 import ClassList from "../components/ClassList";
 
 import { fetchAllEvents } from "../util/EventsServices";
@@ -72,6 +72,23 @@ export default function Home() {
   const handleCreateClass = () => navigate("/classes");
   const handleCreateEvent = () => navigate("/calendar");
 
+  const handleDeleteClass = async (classId) => {
+    const previousClasses = classes;
+
+    setClasses((currentClasses) =>
+      currentClasses.filter((currentClass) => currentClass.id !== classId),
+    );
+
+    try {
+      await deleteClass(classId);
+    } catch (e) {
+      setClasses(previousClasses);
+      console.error(
+        "Error deleting class from database: " + (e.message ?? "Unknown error"),
+      );
+    }
+  };
+
   return (
     <>
       {/* Search Bar */}
@@ -132,7 +149,11 @@ export default function Home() {
 
           {/* Class List */}
           {/* teacher_id matches Firestore field name in classes collection */}
-          <ClassList classes={filteredClasses} teachers={teachers} />
+          <ClassList
+            classes={filteredClasses}
+            teachers={teachers}
+            handleDeleteClass={handleDeleteClass}
+          />
         </>
       )}
 
